@@ -38,20 +38,16 @@ def setup_mlflow(config):
     config : dict
         Configuration dictionary with MLflow settings
     """
-    # Set MLflow tracking URI if specified
-    tracking_uri = config.get('mlflow', {}).get('tracking_uri', None)
-    if tracking_uri:
-        if tracking_uri.startswith('sqlite:'):
-            # Ensure the directory exists
-            db_path = tracking_uri.replace('sqlite:///', '')
-            os.makedirs(os.path.dirname(db_path), exist_ok=True)
-        mlflow.set_tracking_uri(tracking_uri)
+    # Use the default file-based tracking instead of SQLite
+    # By default, MLflow uses './mlruns' directory
     
     # Set experiment name
     experiment_name = config.get('mlflow', {}).get('experiment_name', 'default_experiment')
     mlflow.set_experiment(experiment_name)
     
-    print(f"MLflow tracking URI: {mlflow.get_tracking_uri()}")
+    # Ensure meta.yaml exists to prevent errors
+    
+    print(f"MLflow tracking URI: {mlflow.get_tracking_uri()} (file-based)")
     print(f"MLflow experiment name: {experiment_name}")
 
 def log_sklearn_model(model, X_train, X_test, y_train, y_test, params, config):

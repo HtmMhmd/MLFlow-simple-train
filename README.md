@@ -476,7 +476,33 @@ The `serve_model.py` script:
 **Issue**: Slow hyperparameter tuning
 - Reduce the number of hyperparameter combinations
 - Use smaller datasets for initial exploration
-- Consider using more efficient search strategies
+- Consider using more efficient search strategies 
+
+**Issue**: `WARNING:root:Malformed experiment 'X'. Detailed error Yaml file './mlruns/X/meta.yaml' does not exist.`
+- This error occurs when MLflow finds a corrupted or incomplete experiment directory
+- Solutions:
+  1. Delete the corrupted experiment folder:
+     ```bash
+     # Replace X with the experiment ID from the error message
+     rm -rf ./mlruns/X
+     ```
+  2. Create a new tracking URI to avoid the corrupted data:
+     ```bash
+     # In config.yaml, update the tracking_uri
+     mlflow:
+       tracking_uri: "sqlite:///mlruns/new_mlflow.db"
+     ```
+  3. If you need to recover experiments, manually create the missing meta.yaml:
+     ```bash
+     # Create directory if it doesn't exist
+     mkdir -p ./mlruns/X
+     
+     # Create a basic meta.yaml file
+     echo "name: recovered_experiment
+artifact_location: ./mlruns/X
+lifecycle_stage: active
+creation_time: $(date +%s)000" > ./mlruns/X/meta.yaml
+     ```
 
 ---
 

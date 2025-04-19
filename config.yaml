@@ -3,14 +3,14 @@ seed: 42
 dataset: "breast_cancer"  # "breast_cancer" for classification or "diabetes" for regression
 task: "classification"    # "classification" or "regression"
 test_size: 0.2
-model_type: "sklearn"     # "sklearn" or "tensorflow"
+model_type: "tensorflow"     # "sklearn" or "tensorflow"
 optimization_metric: "accuracy"  # Metric to optimize ("accuracy", "mse", etc.)
 optimization_mode: "max"  # "max" to maximize, "min" to minimize
 
 # MLflow configuration
 mlflow:
   experiment_name: "hyperparameter_tuning_demo"
-  tracking_uri: "sqlite:///mlruns/mlflow.db"  # Use SQLite backend
+  # tracking_uri: "sqlite:///mlruns/mlflow.db"  # Use SQLite backend
   autologging: true  # Enable autologging
 
 # Scikit-learn model configuration
